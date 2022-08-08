@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Галерея</title>
+  <link rel="stylesheet" href="css.css">
+  <meta charset="utf-8">
+  <style>
+      
+    li:hover{
+      cursor: pointer;
+    }
+    .selected{
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+
+  <p>Кликни на элемент списка, чтобы выделить его.</p>
+  <ul class="list">
+    <li>Кристофер Робин</li>
+    <li>Винни пух</li>
+    <li>Тигра</li>
+    <li>Кенга</li>
+    <li>Кролик. Просто Кролик.</li>
+  </ul>
+
+<script>
+
+  let list = document.querySelector(".list");
+
+  list.addEventListener('click', function(event){
+
+    if (event.ctrlKey) {
+      event.target.classList.toggle('selected')
+    }
+
+    else if (event.target.tagName == "LI") {
+      document.querySelectorAll('li').forEach(el => el.classList.remove('selected'));
+      event.target.classList.add('selected')
+    }
+  });
+
+  list.onmousedown = () => {return false}
+
+</script>
+</body>
+</pre>
+</html>
