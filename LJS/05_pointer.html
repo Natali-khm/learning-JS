@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .slider {
+        border-radius: 5px;
+        background: #e0e0e0;
+        background: linear-gradient(left top, #e0e0e0, #eeeeee);
+        width: 310px;
+        height: 15px;
+        margin: 5px;
+      }
+
+      .thumb {
+        width: 10px;
+        height: 25px;
+        border-radius: 3px;
+        position: relative;
+        left: 10px;
+
+        top: -5px;
+        background: blue;
+        cursor: pointer;
+        border: black solid 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slider">
+      <div class="thumb"></div>
+    </div>
+    <p
+      style="border: 1px solid black"
+      onpointerover="this.textContent = new Date()"
+    >
+      mouse over here to see the date
+    </p>
+  </body>
+  <script>
+    let slider = document.querySelector(".slider");
+    let thumb = document.querySelector(".thumb");
+
+    thumb.ondragstart = () => false;
+
+    thumb.onpointerdown = function (event) {
+      thumb.setPointerCapture(event.pointerId);
+
+      let shiftX = event.clientX - thumb.getBoundingClientRect().left;
+
+      thumb.onpointermove = function (event) {
+        let newLeft =
+          event.clientX - shiftX - slider.getBoundingClientRect().left;
+
+        if (newLeft < 0) {
+          newLeft = 0;
+        }
+        let rightEdge =
+          slider.getBoundingClientRect().right - thumb.offsetWidth;
+        if (newLeft > rightEdge) {
+          newLeft = rightEdge;
+        }
+        thumb.style.left = newLeft + "px";
+      };
+    };
+  </script>
+</html>
