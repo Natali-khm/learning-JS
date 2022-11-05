@@ -16,11 +16,11 @@
       }
 
       document.addEventListener("scroll", (event) => {
+        let docRelativeBottom =
+          document.documentElement.getBoundingClientRect().bottom;
         let windowHeight = document.documentElement.clientHeight;
-        let scrolled = window.pageYOffset + windowHeight;
-        let docHeight = document.documentElement.scrollHeight;
 
-        if (scrolled == scrollHeight) {
+        if (docRelativeBottom < windowHeight + 100) {
           document.body.insertAdjacentHTML(
             "beforeend",
             `<p>Дата: ${new Date()}</p>`
