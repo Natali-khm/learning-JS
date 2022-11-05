@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head> </head>
+  <body>
+    <p>Прокрути меня</p>
+
+    <script>
+      lastP = Array.from(document.querySelectorAll("p")).pop();
+
+      while (lastP.getBoundingClientRect().bottom < window.innerHeight) {
+        document.body.insertAdjacentHTML(
+          "beforeend",
+          `<p>Дата: ${new Date()}</p>`
+        );
+        lastP = Array.from(document.querySelectorAll("p")).pop();
+      }
+
+      document.addEventListener("scroll", (event) => {
+        let windowHeight = document.documentElement.clientHeight;
+        let scrolled = window.pageYOffset + windowHeight;
+        let docHeight = document.documentElement.scrollHeight;
+
+        if (scrolled == scrollHeight) {
+          document.body.insertAdjacentHTML(
+            "beforeend",
+            `<p>Дата: ${new Date()}</p>`
+          );
+        }
+      });
+    </script>
+  </body>
+</html>
