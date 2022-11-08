@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <style>
+      body {
+        width: 400px;
+        border: 1px solid gray;
+        margin: auto;
+      }
+      .data-block {
+        width: 400px;
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      p {
+        margin: 0;
+        margin-top: 2px;
+      }
+      .input {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background-color: rgb(221, 239, 243);
+      }
+      .diagram-block {
+        display: grid;
+        align-items: flex-end;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1 fr 1 fr;
+        font-weight: bold;
+        width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <p><b>Депозитный калькулятор.</b></p>
+    <form action="/" name="calculator">
+      <div class="data-block">
+        <p>Первоначальный депозит</p>
+        <input
+          type="number"
+          value="10000"
+          class="input"
+          name="initialInput"
+          required
+        />
+
+        <p>Срок вклада?</p>
+        <select name="terms" id="terms" class="input"">
+          <option value="3">3 (минимум)</option>
+          <option value="6">6 (полгода)</option>
+          <option value="12" selected>12 (год)</option>
+          <option value="18">18 (1.5 года)</option>
+          <option value="24">24 (2 года)</option>
+          <option value="30">30 (2.5 года)</option>
+          <option value="36">36 (3 года)</option>
+          <option value="60">60 (5 лет)</option>
+        </select>
+
+        <p>Годовая процентная ставка?</p>
+        <input
+          type="number"
+          value="5"
+          class="input"
+          name="interestInput"
+          required
+        />
+      </div>
+
+      <div class="diagram-block">
+        <p>Было: <br><span class="initialGraph"></span></p>
+        <p>Стало: <br><span class="resultGraph"></span></p>
+        <div style="background: red; width: 40px; height: 100px"></div>
+        <div
+          style="background: green; width: 40px; height: 0"
+          id="height-after"
+        ></div>
+      </div>
+    </form>
+
+    <script>
+      let form = document.forms.calculator;
+
+      function count() {
+        let initial = +form.initialInput.value;
+        let interest = form.interestInput.value / 100;
+        let years = +form.terms.value / 12;
+
+        let result = Math.round(initial * (1 + interest) ** years);
+
+        document.getElementById('height-after').style.height = result *100 / initial + 'px'
+
+        document.querySelector(".initialGraph").innerHTML = initial;
+        document.querySelector(".resultGraph").innerHTML = result;
+      }
+
+      form.oninput = () => count();
+
+      count();
+    </script>
+  </body>
+</html>
