@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        height: 3000px;
+      }
+
+      #prompt-form {
+        display: inline-block;
+        padding: 5px 5px 5px 70px;
+        width: 200px;
+        border: 1px solid black;
+        background: white url(https://en.js.cx/clipart/prompt.png) no-repeat
+          left 5px;
+        vertical-align: middle;
+      }
+
+      #prompt-form-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background-color: rgba(198, 202, 205, 0.7);
+      }
+
+      #prompt-form-container:before {
+        display: inline-block;
+        height: 100%;
+        content: "";
+        vertical-align: middle;
+      }
+
+      #prompt-form input[name="text"] {
+        display: block;
+        margin: 5px;
+        width: 180px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p>Кликните на кнопку ниже</p>
+    <button
+      onclick='showPrompt(
+"Введите что-нибудь<br>...умное :)", function(value) {
+  alert(value);
+}
+      )'
+    >
+      Кликните, чтобы увидеть форму
+    </button>
+    <div id="prompt-form-container">
+      <form id="prompt-form">
+        <div id="prompt-message">Введите что-нибудь... <br />Пожалуйста..</div>
+        <input name="text" type="text" required />
+        <input type="submit" value="Ok" />
+        <input type="button" name="cancel" value="Отмена" />
+      </form>
+    </div>
+    <script>
+      let form = document.forms[0];
+      let cancel = form.elements["cancel"];
+      let container = document.getElementById("prompt-form-container");
+
+      function showPrompt(html, callback) {
+        document.body.style.overflowY = "hidden";
+        document.getElementById("prompt-message").innerHTML = html;
+        container.style.display = "inline-block";
+
+        let firstElem = form.elements[0];
+        let lastElem = form.elements[form.elements.length - 1];
+
+        firstElem.focus();
+
+        function complete(text) {
+          container.style.display = "none";
+          document.body.style.overflowY = "";
+          callback(`Вы ввели: ${text}`);
+        }
+
+        cancel.onclick = () => {
+          complete(null);
+        };
+
+        form.onsubmit = () => {
+          let info = document.querySelector('input[type="text"]').value;
+          complete(info);
+        };
+
+        document.onkeydown = function (e) {
+          if (e.key == "Escape") {
+            complete(null);
+          }
+        };
+
+        firstElem.onkeydown = function (e) {
+          if (e.key == "Tab" && e.shiftKey) {
+            lastElem.focus();
+            return false;
+          }
+        };
+
+        lastElem.onkeydown = function (e) {
+          if (e.key == "Tab" && !e.shiftKey) {
+            firstElem.focus();
+            return false;
+          }
+        };
+      }
+    </script>
+  </body>
+</html>
